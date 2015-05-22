@@ -1,0 +1,9 @@
+{
+  "name": "generic-middleware-examples",
+  "devDependencies": {},
+  "dependencies": {
+    "markdown-toc": "^0.11.4",
+    "markdownlint": "0.0.5",
+    "marked": "^0.3.3"
+  }
+}
