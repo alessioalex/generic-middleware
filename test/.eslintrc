@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "func-names": 0,                 // http://eslint.org/docs/rules/func-names
+    "no-unused-vars": 0,             // http://eslint.org/docs/rules/no-unused-vars
+    "no-console": 0,                 // http://eslint.org/docs/rules/no-console
+  }
+}

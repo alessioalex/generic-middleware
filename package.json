@@ -9,12 +9,21 @@
   "dependencies": {
     "get-parameter-names": "^0.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^0.24.0",
+    "husky": "^0.8.1",
+    "proxyquire": "^1.6.0",
+    "sinon": "^1.15.4",
+    "tape": "^4.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tape test/unit/*.js test/*/*.js",
+    "lint": "eslint index.js lib/*.js examples/*.js test/*/*.js",
+    "precommit": "npm run lint && npm test"
   },
   "keywords": [
-    "generic", "middleware"
+    "generic",
+    "middleware"
   ],
   "author": "Alexandru Vladutu <alexandru.vladutu@gmail.com>",
   "repository": {

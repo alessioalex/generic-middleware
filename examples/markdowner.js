@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var path = require('path');
 var fs = require('fs');
@@ -18,7 +18,7 @@ app.use(function readFile(opts, data, next) {
 });
 
 app.use(function lintMarkdown(opts, data, next) {
-  var lintOpts = { "strings": {} };
+  var lintOpts = { 'strings': {} };
   lintOpts.strings[path.basename(opts.path)] = data.content;
 
   lint(lintOpts, function(err, result) {
@@ -36,7 +36,7 @@ app.use(function outputHtmlToFile(opts, data, next) {
   fs.writeFile(opts.out, marked(data.toc + data.content), function(err) {
     if (err) { return next(err); }
 
-    console.log('all done\ncat ' + opts.out);
+    console.log(fs.readFileSync(opts.out, 'utf8'));
   });
 });
 

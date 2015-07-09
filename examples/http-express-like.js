@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var middleware = require('../index');
 var http = require('http');
@@ -8,7 +8,7 @@ app.use(function logRequest(req, res, next) {
   console.log('%s %s', req.method, req.url);
 
   if (req.url === '/') {
-    return next();
+    return setTimeout(function() { next(); }, 5000);
   }
 
   next(new Error('Page Not Found'));
