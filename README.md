@@ -1,6 +1,6 @@
 ## general-middleware
 
-Express-like generic middleware which you can use for anything.
+Express-like generic middleware that you can use for anything.
 
 ### Example
 

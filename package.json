@@ -1,7 +1,7 @@
 {
   "name": "generic-middleware",
   "version": "0.1.1",
-  "description": "WorkInProgress",
+  "description": "Express-like generic middleware that you can use for anything.",
   "main": "index.js",
   "directories": {
     "example": "examples"
