@@ -2,6 +2,8 @@
 
 Express-like generic middleware that you can use for anything.
 
+[![build status](https://secure.travis-ci.org/alessioalex/generic-middleware.png)](http://travis-ci.org/alessioalex/generic-middleware)
+
 ### Example
 
 ```js
