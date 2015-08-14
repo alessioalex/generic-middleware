@@ -1,4 +1,4 @@
-## general-middleware
+## generic-middleware
 
 Express-like generic middleware that you can use for anything.
 
