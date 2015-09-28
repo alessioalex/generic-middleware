@@ -18,7 +18,7 @@ test('middleware', function(q) {
     var md = Middleware();
 
     t.deepEqual(md._stack, []);
-    t.ok(typeof md._errorHandler === 'function');
+    t.deepEqual(md._errorHandlers, []);
     t.end();
   });
 
@@ -54,7 +54,7 @@ test('middleware', function(q) {
     var md = new Middleware();
     md.addErrorHandler(noop);
 
-    t.equal(md._errorHandler, noop);
+    t.deepEqual(md._errorHandlers, [noop]);
     t.end();
   });
 
@@ -69,16 +69,19 @@ test('middleware', function(q) {
     t.end();
   });
 
-  q.test('it should call the error handler', function(t) {
+  q.test('it should call the error handlers', function(t) {
     var md = new Middleware();
     var err = new Error('oh noes');
-    var handleErrors = sinon.spy();
+    var firstHandler = sinon.spy();
+    var lastHandler = sinon.spy();
     var args = ['foo', 'bar'];
 
-    md._errorHandler = handleErrors;
+    md.addErrorHandler(firstHandler);
+    md.addErrorHandler(lastHandler);
 
     md._handle(err, 0, args);
-    t.ok(handleErrors.calledWith(err, args[0], args[1]));
+    t.ok(firstHandler.calledWith(err, args[0], args[1]));
+    t.ok(lastHandler.calledWith(err, args[0], args[1]));
 
     t.end();
   });
