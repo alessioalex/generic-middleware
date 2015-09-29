@@ -50,6 +50,54 @@ test('middleware', function(q) {
     t.end();
   });
 
+  q.test('#useAfter(null, fn) should add fn to tail', function(t) {
+    var md = new Middleware();
+    var first = function(foo, bar) {};
+    var last = function(foo, bar) {};
+    md.use(first);
+    md.useAfter(null, last);
+
+    t.deepEqual(md._stack, [first, last]);
+    t.end();
+  });
+
+  q.test('#useAfter(afterFn, fn) should add fn ahead of beforeFn', function(t) {
+    var md = new Middleware();
+    var first = function(foo, bar) {};
+    var last = function(foo, bar) {};
+    var middle = function(foo, bar) {};
+    md.use(first);
+    md.use(last);
+    md.useAfter(first, middle);
+
+    t.deepEqual(md._stack, [first, middle, last]);
+    t.end();
+  });
+
+  q.test('#useBefore(null, fn) should add fn to head', function(t) {
+    var md = new Middleware();
+    var fn = function(foo, bar) {};
+    var first = function(foo, bar) {};
+    md.use(fn);
+    md.useBefore(null, first);
+
+    t.deepEqual(md._stack, [first, fn]);
+    t.end();
+  });
+
+  q.test('#useBefore(beforeFn, fn) should add fn ahead of beforeFn', function(t) {
+    var md = new Middleware();
+    var first = function(foo, bar) {};
+    var last = function(foo, bar) {};
+    var middle = function(foo, bar) {};
+    md.use(first);
+    md.use(last);
+    md.useBefore(last, middle);
+
+    t.deepEqual(md._stack, [first, middle, last]);
+    t.end();
+  });
+
   q.test('it should add the error handler', function(t) {
     var md = new Middleware();
     md.addErrorHandler(noop);
