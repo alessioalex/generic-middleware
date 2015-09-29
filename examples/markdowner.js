@@ -18,7 +18,7 @@ app.use(function readFile(opts, data, next) {
 });
 
 app.use(function lintMarkdown(opts, data, next) {
-  var lintOpts = { 'strings': {} };
+  var lintOpts = { strings: {} };
   lintOpts.strings[path.basename(opts.path)] = data.content;
 
   lint(lintOpts, function(err, result) {

@@ -10,8 +10,8 @@
     "get-parameter-names": "^0.2.0"
   },
   "devDependencies": {
-    "eslint": "^0.24.0",
-    "husky": "^0.8.1",
+    "eslint": "^1.5.1",
+    "husky": "^0.10.1",
     "proxyquire": "^1.6.0",
     "sinon": "^1.15.4",
     "tape": "^4.0.0"

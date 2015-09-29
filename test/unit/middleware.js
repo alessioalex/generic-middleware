@@ -111,9 +111,9 @@ test('middleware', function(q) {
 
     // mocking an array object with a bad length, for testing purposes
     md._stack = {
-      '0': noop,
-      '1': fn1,
-      '2': fn2,
+      0: noop,
+      1: fn1,
+      2: fn2,
       length: 2
     };
 
