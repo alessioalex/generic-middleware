@@ -127,7 +127,20 @@ test('middleware', function(q) {
     md.addErrorHandler(firstHandler);
     md.addErrorHandler(lastHandler);
 
-    md._handle(err, 0, args);
+    md._handle({
+      err: err,
+      index: 0,
+      errorHandlerIndex: 0,
+      args: args
+    });
+
+    md._handle({
+      err: err,
+      index: 0,
+      errorHandlerIndex: 1,
+      args: args
+    });
+
     t.ok(firstHandler.calledWith(err, args[0], args[1]));
     t.ok(lastHandler.calledWith(err, args[0], args[1]));
 
@@ -143,12 +156,20 @@ test('middleware', function(q) {
     md._stack = [noop, noop, noop];
     md._callStackFn = callStackFn;
 
-    md._handle(null, index, args);
-    var calledWith = callStackFn.args[0];
-    // handle pushes a callback function alongside the regular args
-    var mdArgs = calledWith[1].slice(0, calledWith[1].length - 1);
+    md._handle({
+      err: null,
+      index: index,
+      errorHandlerIndex: 0,
+      args: args
+    });
 
-    t.equal(calledWith[0], index);
+    var calledWith = callStackFn.args[0];
+
+    // handle pushes a callback function alongside the regular args
+    var mdArgs = calledWith[2].slice(0, calledWith[2].length - 1);
+
+    t.deepEqual(calledWith[0], md._stack);
+    t.equal(calledWith[1], index);
     t.deepEqual(mdArgs, args);
 
     t.end();
@@ -168,8 +189,8 @@ test('middleware', function(q) {
       length: 2
     };
 
-    md._callStackFn(1, args);
-    md._callStackFn(2, args);
+    md._callStackFn(md._stack, 1, args);
+    md._callStackFn(md._stack, 2, args);
 
     t.ok(fn1.calledOnce);
     t.ok(!fn2.calledOnce);
