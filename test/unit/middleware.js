@@ -22,15 +22,13 @@ test('middleware', function(q) {
     t.end();
   });
 
-  q.test('it should add an error handler when using an error as the first argument', function(t) {
-    var Md = proxyquire('../../lib/middleware', {
-      'get-parameter-names': function() { return ['err']; }
-    });
+  q.test('it should add an error handler when using more arguments', function(t) {
+    var md = Middleware();
+    var handleErrors = function(err, foo, bar) { if (err) { /**/ } };
 
-    var md = new Md();
     md.addErrorHandler = sinon.spy();
 
-    var handleErrors = function(err, foo, bar) { if (err) { /**/ } };
+    md.use(function(foo, bar) { });
     md.use(handleErrors);
 
     t.ok(md.addErrorHandler.calledWith(handleErrors));

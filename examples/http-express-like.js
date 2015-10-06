@@ -37,7 +37,7 @@ app.use(function handlerError(err, req, res, next) {
   next(err);
 });
 
-app.use(function logError(err, req, res) {
+app.use(function logError(err, req, res, next) {
   var errMsg = 'Error: %s | Status code %s | URL: %s';
 
   console.log(errMsg, err.message, err.statusCode, err.url);

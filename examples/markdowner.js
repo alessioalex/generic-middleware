@@ -40,7 +40,7 @@ app.use(function outputHtmlToFile(opts, data, next) {
   });
 });
 
-app.use(function handleError(err, opts, data) {
+app.use(function handleError(err, opts, data, next) {
   console.error('an error occured with markdowner');
 
   throw err;
