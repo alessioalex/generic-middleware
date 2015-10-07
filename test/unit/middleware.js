@@ -18,19 +18,17 @@ test('middleware', function(q) {
     var md = Middleware();
 
     t.deepEqual(md._stack, []);
-    t.ok(typeof md._errorHandler === 'function');
+    t.deepEqual(md._errorHandlers, []);
     t.end();
   });
 
-  q.test('it should add an error handler when using an error as the first argument', function(t) {
-    var Md = proxyquire('../../lib/middleware', {
-      'get-parameter-names': function() { return ['err']; }
-    });
+  q.test('it should add an error handler when using more arguments', function(t) {
+    var md = Middleware();
+    var handleErrors = function(err, foo, bar) { if (err) { /**/ } };
 
-    var md = new Md();
     md.addErrorHandler = sinon.spy();
 
-    var handleErrors = function(err, foo, bar) { if (err) { /**/ } };
+    md.use(function(foo, bar) { });
     md.use(handleErrors);
 
     t.ok(md.addErrorHandler.calledWith(handleErrors));
@@ -102,7 +100,7 @@ test('middleware', function(q) {
     var md = new Middleware();
     md.addErrorHandler(noop);
 
-    t.equal(md._errorHandler, noop);
+    t.deepEqual(md._errorHandlers, [noop]);
     t.end();
   });
 
@@ -117,16 +115,32 @@ test('middleware', function(q) {
     t.end();
   });
 
-  q.test('it should call the error handler', function(t) {
+  q.test('it should call the error handlers', function(t) {
     var md = new Middleware();
     var err = new Error('oh noes');
-    var handleErrors = sinon.spy();
+    var firstHandler = sinon.spy();
+    var lastHandler = sinon.spy();
     var args = ['foo', 'bar'];
 
-    md._errorHandler = handleErrors;
+    md.addErrorHandler(firstHandler);
+    md.addErrorHandler(lastHandler);
 
-    md._handle(err, 0, args);
-    t.ok(handleErrors.calledWith(err, args[0], args[1]));
+    md._handle({
+      err: err,
+      index: 0,
+      errorHandlerIndex: 0,
+      args: args
+    });
+
+    md._handle({
+      err: err,
+      index: 0,
+      errorHandlerIndex: 1,
+      args: args
+    });
+
+    t.ok(firstHandler.calledWith(err, args[0], args[1]));
+    t.ok(lastHandler.calledWith(err, args[0], args[1]));
 
     t.end();
   });
@@ -140,12 +154,20 @@ test('middleware', function(q) {
     md._stack = [noop, noop, noop];
     md._callStackFn = callStackFn;
 
-    md._handle(null, index, args);
-    var calledWith = callStackFn.args[0];
-    // handle pushes a callback function alongside the regular args
-    var mdArgs = calledWith[1].slice(0, calledWith[1].length - 1);
+    md._handle({
+      err: null,
+      index: index,
+      errorHandlerIndex: 0,
+      args: args
+    });
 
-    t.equal(calledWith[0], index);
+    var calledWith = callStackFn.args[0];
+
+    // handle pushes a callback function alongside the regular args
+    var mdArgs = calledWith[2].slice(0, calledWith[2].length - 1);
+
+    t.deepEqual(calledWith[0], md._stack);
+    t.equal(calledWith[1], index);
     t.deepEqual(mdArgs, args);
 
     t.end();
@@ -165,8 +187,8 @@ test('middleware', function(q) {
       length: 2
     };
 
-    md._callStackFn(1, args);
-    md._callStackFn(2, args);
+    md._callStackFn(md._stack, 1, args);
+    md._callStackFn(md._stack, 2, args);
 
     t.ok(fn1.calledOnce);
     t.ok(!fn2.calledOnce);

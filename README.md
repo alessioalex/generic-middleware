@@ -25,7 +25,9 @@ app.use(function stringifyHeaders(req, res, next) {
   res.end(JSON.stringify(req.headers, null, 2));
 });
 
-app.use(function handlerErrors(err, req, res) {
+// error handler auto-detection
+// must use the same arguments as previous middleware and `err`
+app.use(function handlerErrors(err, req, res, next) {
   if (/not found/ig.test(err.message)) {
     res.statusCode = 404;
     res.end('Page ' + req.url + ' was not found.');
