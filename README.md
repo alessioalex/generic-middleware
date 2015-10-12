@@ -43,15 +43,6 @@ console.log('now visit http://localhost:7777');
 
 For more examples checkout the `examples/` folder.
 
-### How does it work?
-
-You attach middleware by using `app.use()`, which has the same signature as Connect middleware (param1, param2, ... callback).
-When `app()` is called, its arguments will be remembered and passed onto the middleware functions,
-along with a callback that is used to determine when the next middleware should be called.
-
-For more info checkout the tests and examples.
-
-
 ### API
 
 
@@ -78,6 +69,33 @@ Exported by "generic-middleware" module
 - @param {`Function`?} [before] - function in the stack to precede (if null, add to the head)
 - @param {`Function`} fn - function to inject into the stack
 
+### How does it work?
+
+You attach middleware by using `app.use()`, which has the same signature as Connect middleware (param1, param2, ... callback).
+When `app()` is called, its arguments will be remembered and passed onto the middleware functions,
+along with a callback that is used to determine when the next middleware should be called.
+
+The error handling logic looks at the number of function parameters used by `app.use()` to compare the
+newly added function to the 1st one added to the stack, and if the number of params if higher then it must be
+an error handler (think of `app.use(function(a, b, c) { /*...*/ })` vs `app.use(function(err, a, b, c) { /*...*/ })`).
+What that means if that you shouldn't omit params even if you don't use them.
+
+For more info checkout the tests and examples.
+
+### FAQ
+
+- When should I use `.useAfter()` or `.useBefore()`?
+
+When you are releasing an app to be used by others and make some middleware publically accessible,
+so that others can hook their custom stuff before and after a specific middleware function from your stack.
+
+- My error handler is not being called, why is that?
+
+Make sure you are defining the error handling function with the same arguments as the regular middleware plus the error param (as the 1st one).
+
+- Can I use this module on the frontend as well?
+
+Sure thing, it's really lightweight and has no external dependencies so far either.
 
 ### License
 
