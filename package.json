@@ -6,10 +6,9 @@
   "directories": {
     "example": "examples"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "eslint": "^1.5.1",
+    "alessioalex-standard": "^1.1.0",
     "husky": "^0.10.1",
     "proxyquire": "^1.6.0",
     "sinon": "^1.15.4",
@@ -17,7 +16,7 @@
   },
   "scripts": {
     "test": "tape test/unit/*.js test/functional/*.js",
-    "lint": "eslint index.js lib/*.js examples/*.js test/*/*.js",
+    "lint": "alessioalex-standard",
     "precommit": "npm run lint && npm test"
   },
   "keywords": [

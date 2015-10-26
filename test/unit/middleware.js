@@ -1,3 +1,4 @@
+/* eslint-disable no-console, func-names, no-unused-vars */
 'use strict';
 
 var proxyquire = require('proxyquire').noCallThru();
