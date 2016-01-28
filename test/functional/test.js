@@ -41,4 +41,37 @@ test('functional', function(q) {
 
     clock.tick(6000);
   });
+
+  q.test('it should work properly with paramsLength', function(t) {
+    var app = Middleware();
+    var count = 0;
+
+    app.paramsLength = 3;
+
+    app.use(function errorHandler1(err, e, f, next) {
+      count++;
+      t.equal(count, 3);
+      next(err);
+    });
+
+    app.use(function errorHandler2(err, g, h, next) {
+      count++;
+      t.equal(count, 4);
+      t.end();
+    });
+
+    app.use(function(a, b, next) {
+      count++;
+      t.equal(count, 1);
+      next();
+    });
+
+    app.use(function(c, d, next) {
+      count++;
+      t.equal(count, 2);
+      next(new Error('go to error handler'));
+    });
+
+    app(1, 2);
+  });
 });

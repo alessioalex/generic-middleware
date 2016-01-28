@@ -196,4 +196,18 @@ test('middleware', function(q) {
 
     t.end();
   });
+
+  q.test('it should rely on paramsLength instead of auto-detecting params length', function(t) {
+    var md = new Middleware();
+    md.addErrorHandler = sinon.stub();
+
+    md.paramsLength = 4; // as in `md.use(function(a, b, c, next);`
+
+    md.use(function(err, a, b, c, next) { next(); });
+
+    // since the `paramsLength` is already set,
+    // it should identify the fn as the error handler
+    t.ok(md.addErrorHandler.calledOnce);
+    t.end();
+  });
 });

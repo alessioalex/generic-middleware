@@ -21,9 +21,9 @@ test('app', function(q) {
 
   // -----
 
-  q.test('it should have middleware methods', function(t) {
+  q.test('it should have middleware methods and paramsLength property', function(t) {
     var app = createApp();
-    t.deepEqual(Object.keys(app), ['a', 'b', 'c', 'init']);
+    t.deepEqual(Object.keys(app), ['a', 'b', 'c', 'init', 'paramsLength']);
 
     t.end();
   });

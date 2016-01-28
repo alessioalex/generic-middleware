@@ -52,6 +52,10 @@ For more examples checkout the `examples/` folder.
 
 Exported by "generic-middleware" module
 
+- paramsLength
+
+Manually set the expected number of parameters instead of relying on automatic detection of the first middleware function injected into the stack.
+
 
 #### Middleware#use(fn)
 

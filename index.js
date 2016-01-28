@@ -14,6 +14,17 @@ var createApp = function createApp() {
     proxy[key] = mid[key].bind(mid);
   });
 
+  // being explicit
+  Object.defineProperty(proxy, 'paramsLength', {
+    enumerable: true,
+    set: function setParamsLength(val) {
+      mid.paramsLength = val;
+    },
+    get: function getParamsLength() {
+      return mid.paramsLength;
+    }
+  });
+
   return proxy;
 };
 
