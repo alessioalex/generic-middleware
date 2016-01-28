@@ -52,9 +52,6 @@ For more examples checkout the `examples/` folder.
 
 Exported by "generic-middleware" module
 
-- paramsLength
-
-Manually set the expected number of parameters instead of relying on automatic detection of the first middleware function injected into the stack.
 
 
 #### Middleware#use(fn)
@@ -72,6 +69,10 @@ Manually set the expected number of parameters instead of relying on automatic d
 
 - @param {`Function`?} [before] - function in the stack to precede (if null, add to the head)
 - @param {`Function`} fn - function to inject into the stack
+
+#### Middleware#setParams(..args)
+
+- @param {`..String`|`[String]`} - either specify the params directly as function arguments or pass in an array (of strings)
 
 ### How does it work?
 

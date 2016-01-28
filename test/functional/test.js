@@ -42,11 +42,11 @@ test('functional', function(q) {
     clock.tick(6000);
   });
 
-  q.test('it should work properly with paramsLength', function(t) {
+  q.test('it should work properly with #setParams', function(t) {
     var app = Middleware();
     var count = 0;
 
-    app.paramsLength = 3;
+    app.setParams('foo', 'bar');
 
     app.use(function errorHandler1(err, e, f, next) {
       count++;

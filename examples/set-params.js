@@ -6,7 +6,8 @@ var http = require('http');
 var app = middleware();
 
 // An alternative to automatical detection of args length
-app.paramsLength = 3; // req, res, next
+// this actually sets the number of params internally
+app.setParams('req', 'res');
 
 // we can use the error handler first because we automatically set `paramsLength`
 // and the error handler has 4 params instead of 3, so it can detect it

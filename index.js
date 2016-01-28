@@ -1,5 +1,6 @@
 'use strict';
 
+var slice = Array.prototype.slice;
 var Middleware = require('./lib/middleware');
 
 // middleware factory, used to mimic the Express API
@@ -14,16 +15,20 @@ var createApp = function createApp() {
     proxy[key] = mid[key].bind(mid);
   });
 
-  // being explicit
-  Object.defineProperty(proxy, 'paramsLength', {
-    enumerable: true,
-    set: function setParamsLength(val) {
-      mid.paramsLength = val;
-    },
-    get: function getParamsLength() {
-      return mid.paramsLength;
+  proxy.setParams = function setParamsLength() {
+    var args = slice.call(arguments);
+
+    if (Array.isArray(args[0])) {
+      // setParams(['foo', 'bar', 'baz'])
+      mid.paramsLength = args[0].length;
+    } else {
+      // setParams('foo', 'bar', 'baz')
+      mid.paramsLength = args.length;
     }
-  });
+
+    // adding +1 because of the callback
+    mid.paramsLength++;
+  };
 
   return proxy;
 };
